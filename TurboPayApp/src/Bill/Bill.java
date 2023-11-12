@@ -1,6 +1,7 @@
 package Bill;
 
 import java.util.Date;
+import java.util.Random;
 
 public abstract class Bill {
     String ID;
@@ -8,7 +9,21 @@ public abstract class Bill {
     String customerName;
     Date date ;
     boolean isPaid ;
+    Bill(){
+        Random random = new Random();
+        cost = 100 + random.nextInt(2000);
+    }
+    protected void mainInfo(){
+        System.out.println("Date : "+ date);
+        System.out.println("Customer name :"+ customerName);
+        if(!isPaid){
+            System.out.println("Not paid yet");
+        }else{
+            System.out.println("Paid successfully");
+        }
+        System.out.println("Price : "+cost);
 
+    }
     abstract protected void billInfo();
 
     public Date getDate() {

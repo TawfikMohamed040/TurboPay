@@ -1,12 +1,14 @@
 package UserAccount;
 
+import Bill.BillPayment;
+
 public class UserAccount {
     private String username;
     private String password;
     private String email;
     private Integer balance;
     private String phone;
-//    billPayment:BillPayment;
+    private BillPayment billPayment;
 
 
 
@@ -19,7 +21,7 @@ public class UserAccount {
 
     }
     public void payBill(String billType){
-
+        billPayment.pay(billType);
     }
 
     public void setBalance(Integer balance) {

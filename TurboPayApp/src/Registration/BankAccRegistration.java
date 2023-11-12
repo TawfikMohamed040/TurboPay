@@ -1,8 +1,28 @@
 package Registration;
+import Validator.BankIdValidator;
+import Verifier.BankIDVerifier;
 
-public class BankAccRegistration extends Registration{
+import java.util.Scanner;
+
+public class BankAccRegistration extends Registration {
+    String BankAccID;
+
     @Override
-    public void completeRegistration(){
-        System.out.print("BANK USER COMPLETED REGISTRATION");
+    public void completeRegistration() {
+        validator = new BankIdValidator();
+        do {
+            System.out.println("Please Enter a correct password:");
+            BankAccID = scanner.nextLine();
+        } while (!validator.isValid(BankAccID));
+
+        System.out.println("BANK USER COMPLETED REGISTRATION");
+
+        verifier = new BankIDVerifier();
+        verifier.sendVerificationCode();
+        String userMsg = "";
+        do {
+            System.out.println("Please enter the correct verification code:");
+            userMsg = scanner.nextLine();
+        } while (!verifier.isVerified(userMsg));
     }
 }

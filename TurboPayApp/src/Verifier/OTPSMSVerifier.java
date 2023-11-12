@@ -1,8 +1,14 @@
 package Verifier;
 
-public class OTPSMSVerifier implements Verifier{
+import java.util.Objects;
+import java.util.Random;
+
+public class OTPSMSVerifier extends Verifier{
+
     @Override
-    public boolean isVerified(String info) {
-        return false;
+    public void sendVerificationCode() {
+        Random random = new Random();
+        code = String.valueOf(1 + random.nextInt(50));
+        System.out.println("OTP SMS has been sent successfully "+ code);
     }
 }

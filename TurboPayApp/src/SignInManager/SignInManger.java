@@ -7,11 +7,10 @@ public class SignInManger {
     String username;
     String password;
 
-    public void signIn(){
-        System.out.print("SIGNED IN");
-    }
     public void completeSignIn(){
-        System.out.println("USER FOUND");
+        if(ADM.isAccountExist(username, password)) {
+            System.out.print("Signed in");
+        }else System.out.println("Account does not exist");
     }
     public void setUsername(String username) {
         this.username = username;

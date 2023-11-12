@@ -1,5 +1,5 @@
 package Validator;
 
 public interface ValidatorSchema {
-    boolean isValid();
+    boolean isValid(String info);
 }

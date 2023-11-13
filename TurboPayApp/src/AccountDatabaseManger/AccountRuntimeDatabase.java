@@ -3,6 +3,7 @@ package AccountDatabaseManger;
 import UserAccount.UserAccount;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public  class AccountRuntimeDatabase implements AccountDatabaseManger {
 
@@ -54,7 +55,14 @@ public  class AccountRuntimeDatabase implements AccountDatabaseManger {
             System.out.println("USER DELETED");
         }
     }
-
+    public UserAccount returnAccount(String accUsername) {
+        for (UserAccount acc : accounts) {
+            if (Objects.equals(acc.getUsername(), accUsername)) {
+               return acc ;
+            }
+        }
+        return null;
+    }
     public ArrayList<UserAccount> getAccounts() {
         return accounts;
     }

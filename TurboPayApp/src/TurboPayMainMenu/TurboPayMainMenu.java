@@ -5,13 +5,24 @@ import Registration.*;
 import SignInManager.SignInManger;
 import UserAccount.*;
 
+import java.util.Scanner;
+
 public class TurboPayMainMenu {
     private Registration registration;
     private SignInManger signInManger;
-//    private UserAccount userAccount;
+    Scanner scanner;
+    private UserAccount userAccount;
+    private UserFactory userFactory;
+
+    public TurboPayMainMenu() {
+        scanner = new Scanner(System.in);
+        signInManger = new SignInManger();
+        userAccount = new UserAccount();
+        userFactory = new UserFactory();
+    }
+
     public static final AccountRuntimeDatabase accountDatabaseManger = new AccountRuntimeDatabase();
 
-    }
 
     public void loadProfileBankUser(String username, String password) {
 
@@ -47,47 +58,158 @@ public class TurboPayMainMenu {
 
     private void registerUser() {
         // Implementation for user registration
-        System.out.println("1.User Wallet Account\n -epay\n -tele\n -bank");
-        System.out.println("2.Bank User");
-        String userType = scanner.nextLine();
+        System.out.println("=================================================\n");
+        System.out.println(">>User Wallet Account\n 1-epay\n 2-tele\n 3-bank");
+        System.out.println(">>4.Bank User");
+        int userType = scanner.nextInt();
         userAccount = userFactory.makeUser(userType);
-        if(userAccount instanceof WalletUser){
+        if (userAccount instanceof WalletUser) {
             registration = new WalletAccRegistration();
-        }else {
+        } else {
             registration = new BankAccRegistration();
         }
+        registration.setUser(userType);
         registration.register();
-        userAccount = registration.returnUser(userType);
+        userAccount = registration.returnUser();
         accountDatabaseManger.addNewUser(userAccount);
+        System.out.println("=================================================\n");
     }
 
     private void loginUser() {
-        
-        System.out.println("Enter user type (1 for Wallet User, 2 for Bank User): ");
-        int userType = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        System.out.println("=================================================\n");
 
-        switch (userType) {
-            case 1:
-                showWalletUserMenu();
-                break;
-            case 2:
-                showBankUserMenu();
-                break;
-            default:
-                System.out.println("Invalid user type. Returning to the main menu.");
+        do {
+            System.out.println("Enter username");
+            signInManger.setUsername(scanner.nextLine());
+            System.out.println("Enter password");
+            signInManger.setPassword(scanner.nextLine());
+            // Consume the newline character
+            scanner.nextLine();
+        } while (!signInManger.completeSignIn());
+
+        userAccount = accountDatabaseManger.returnAccount(signInManger.getUsername());
+
+        if (userAccount instanceof WalletUser) {
+            System.out.println("=================================================\n");
+            showWalletUserMenu();
+        } else {
+            System.out.println("=================================================\n");
+            showBankUserMenu();
         }
     }
 
+
     private void showWalletUserMenu() {
-        // Implementation for wallet user menu
-        System.out.println("Wallet User menu logic goes here.");
+        while (true) {
+            System.out.println("-----------------------------");
+            System.out.println("Wallet user menu");
+            System.out.println("1. Transfer to wallet");
+            System.out.println("2. Transfer to another acc");
+            System.out.println("3. Inquire about balance");
+            System.out.println("4. Pay bill");
+            System.out.println("5. Back to main menu");
+            System.out.println("-----------------------------");
+
+            int walletUserOption = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (walletUserOption) {
+                case 1:
+                    transferToWallet();
+                    break;
+                case 2:
+                    transferToAnotherAccount();
+                    break;
+                case 3:
+                    inquireBalance();
+                    break;
+                case 4:
+                    payBill();
+                    break;
+                case 5:
+                    runApp();
+                    return;
+                default:
+                    System.out.println("Invalid option. Please choose a valid option.");
+            }
+        }
     }
 
-    private void showBankUserMenu() {
-        // Implementation for bank user menu
-        System.out.println("Bank User menu logic goes here.");
+        private void showBankUserMenu () {
+            while (true) {
+                System.out.println("-----------------------------");
+                System.out.println("Bank user menu");
+                System.out.println("1. Transfer to wallet");
+                System.out.println("2. Transfer to another acc");
+                System.out.println("3. Transfer to another bank acc");
+                System.out.println("4. Inquire about balance");
+                System.out.println("5. Pay bill");
+                System.out.println("6. Back to main menu");
+                System.out.println("-----------------------------");
+
+                int BankUserOption = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
+
+                switch (BankUserOption) {
+                    case 1:
+                        transferToWallet();
+                        break;
+                    case 2:
+                        transferToAnotherAccount();
+                        break;
+                    case 3:
+                        transferToAnotherBankAccount();
+                        break;
+                    case 4:
+                        inquireBalance();
+                        break;
+                    case 5:
+                        payBill();
+                        break;
+                    case 6:
+                        runApp();
+                        return;
+                    default:
+                        System.out.println("Invalid option. Please choose a valid option.");
+                }
+            }
+        }
+
+    private void transferToAnotherBankAccount() {
+        System.out.println("Please enter Bank ID");
+        String bankID= scanner.nextLine();
+        System.out.println("Please enter the amount");
+        int amount = scanner.nextInt();
+        ((BankAccUser)userAccount).transferToBankAcc( amount, bankID);
     }
+
+
+    private void payBill() {
+        System.out.println("enter bill type");
+        String billType = scanner.nextLine();
+        userAccount.payBill(billType);
+    }
+
+    private void inquireBalance() {
+        System.out.println("Current Balance : "  + userAccount.getBalance());
+    }
+
+    private void transferToAnotherAccount() {
+        System.out.println("Please enter username");
+        String username= scanner.nextLine();
+        System.out.println("Please enter the amount");
+        int amount = scanner.nextInt();
+        userAccount.transferToAcc( amount, username);
+    }
+
+    private void transferToWallet() {
+        System.out.println("Please enter the Phone Number");
+        String phoneNumber = scanner.nextLine();
+        System.out.println("Please enter the amount you want to transfer");
+        int amount=scanner.nextInt();
+        userAccount.transferToWallet(amount,phoneNumber);
+    }
+}
 
 
 //        registration = new BankAccRegistration();
@@ -131,5 +253,3 @@ public class TurboPayMainMenu {
 ////            signInManger.completeSignIn();
 ////        }
 ////        System.out.println("1.Register\n2.Signin\n");
-}
-

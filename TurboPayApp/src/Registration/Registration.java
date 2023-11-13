@@ -1,4 +1,5 @@
 package Registration;
+import TurboPayMainMenu.TurboPayMainMenu;
 import UserAccount.*;
 import Validator.*;
 import Verifier.*;
@@ -13,10 +14,15 @@ public abstract class Registration {
     protected ValidatorSchema validator;
     protected Verifier verifier;
     protected UserFactory userFactory;
+    protected UserAccount account;
     Scanner scanner ;
     Registration(){
         userFactory = new UserFactory();
         scanner =new Scanner(System.in);
+        account = new UserAccount();
+    }
+    public void setUser(int userType){
+        account =  userFactory.makeUser(userType);
     }
     public void register(){
         setUsername();
@@ -27,9 +33,9 @@ public abstract class Registration {
     }
 
     public abstract void completeRegistration();
-    public UserAccount returnUser(String userType){
+    public UserAccount returnUser(){
 
-        UserAccount account =  userFactory.makeUser(userType);
+     ;
         account.setEmail(email);
         account.setPassword(password);
         account.setPhone(phone);
@@ -65,11 +71,10 @@ public abstract class Registration {
 
     public void setUsername() {
         validator = new UserNameValidator();
-
         do {
             System.out.println("Please Enter a correct username : ");
             this.username = scanner.nextLine();
-        } while (!validator.isValid(username));
+        } while (!validator.isValid(username) || TurboPayMainMenu.accountDatabaseManger.isUsernameExist(this.username));
     }
 
 

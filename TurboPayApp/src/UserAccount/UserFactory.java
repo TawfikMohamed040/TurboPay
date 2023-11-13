@@ -5,17 +5,16 @@ import Bill.GasBill;
 import Bill.WaterBill;
 
 public class UserFactory {
-    public UserAccount makeUser(String userAccType){
+    public UserAccount makeUser(int userAccType){
         // BankWalletUser
         // EpayWalletUser
         // TeleComWalletUser
-        userAccType = userAccType.toLowerCase();
 
         return switch (userAccType) {
-            case "epayWallet" -> new EpayWalletUser();
-            case "teleWallet" -> new TeleComWalletUser();
-            case "bankWallet" -> new BankWalletUser();
-            case "bank" -> new BankAccUser();
+            case 1 -> new EpayWalletUser();
+            case 2 -> new TeleComWalletUser();
+            case 3 -> new BankWalletUser();
+            case  4-> new BankAccUser();
             default -> null;
         };
     }

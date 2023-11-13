@@ -1,4 +1,5 @@
 package Registration;
+import UserAccount.BankAccUser;
 import Validator.BankIdValidator;
 import Verifier.BankIDVerifier;
 
@@ -24,5 +25,6 @@ public class BankAccRegistration extends Registration {
             System.out.println("Please enter the correct verification code:");
             userMsg = scanner.nextLine();
         } while (!verifier.isVerified(userMsg));
+        ((BankAccUser)account).setBankAccID(BankAccID);
     }
 }

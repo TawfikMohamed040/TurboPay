@@ -12,7 +12,7 @@ public class WalletAccRegistration extends  Registration{
         validator = new WalletIDValidator();
 
         do {
-            System.out.println("Please Enter a correct password : ");
+            System.out.println("Please Enter a correct wallet id  : ");
             this.walletID = scanner.nextLine();
         } while (!validator.isValid(walletID));
 
@@ -24,6 +24,7 @@ public class WalletAccRegistration extends  Registration{
             System.out.println("Please enter the correct verification code");
             userMsg = scanner.nextLine();
         } while (!verifier.isVerified(userMsg));
+        ((WalletUser)account).setWalletID(walletID);
     }
 
 

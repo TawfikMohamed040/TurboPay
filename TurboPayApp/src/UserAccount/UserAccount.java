@@ -15,26 +15,42 @@ public class UserAccount {
     private Integer balance;
     private String phone;
     private BillPayment billPayment;
+    public UserAccount(){
+        this.balance=5000;
+    }
 
 
 
 
+    public void transferToWallet(int amount , String phoneNumber){
+        if(balance < amount){
+            System.out.println("Balance is not enough");
+            return;
+        }
 
-    public void transferToWallet(int amount , String walletNo){
         for(UserAccount acc:accountDatabaseManger.getAccounts()){
-            if(acc instanceof WalletUser && Objects.equals(((WalletUser) acc).walletID, walletNo)){
+            if(acc instanceof WalletUser && Objects.equals(((WalletUser) acc).getPhone(), phoneNumber)){
                 acc.setBalance(acc.getBalance() + amount);
                 this.setBalance(this.getBalance() - amount);
+                System.out.println("Transaction Done :)");
+
                 return;
             }
         }
         System.out.println("User Not Exist");
     }
     public void transferToAcc(int amount, String accUsername){
+        if(balance < amount){
+            System.out.println("Balance is not enough");
+            return;
+        }
+
         for(UserAccount acc:accountDatabaseManger.getAccounts()){
             if(Objects.equals(acc.getUsername(), accUsername)){
                 acc.setBalance(acc.getBalance() + amount);
                 this.setBalance(this.getBalance() - amount);
+                System.out.println("Transaction Done :)");
+
                 return;
             }
         }

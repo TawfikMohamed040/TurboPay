@@ -15,6 +15,7 @@ public abstract class Registration {
     protected UserFactory userFactory;
     Scanner scanner ;
     Registration(){
+        userFactory = new UserFactory();
         scanner =new Scanner(System.in);
     }
     public void register(){
@@ -27,6 +28,7 @@ public abstract class Registration {
 
     public abstract void completeRegistration();
     public UserAccount returnUser(String userType){
+
         UserAccount account =  userFactory.makeUser(userType);
         account.setEmail(email);
         account.setPassword(password);

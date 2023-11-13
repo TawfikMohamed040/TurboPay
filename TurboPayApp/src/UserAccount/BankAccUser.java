@@ -1,9 +1,9 @@
 package UserAccount;
 
-public class BankAccUser {
+public class BankAccUser extends UserAccount {
     private String bankAccID;
 
-    public void transferToBankAcc(String bankID) {
+    public void transferToBankAcc(int amount, String bankID) {
 
     }
 }

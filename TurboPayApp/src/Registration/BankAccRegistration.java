@@ -11,7 +11,7 @@ public class BankAccRegistration extends Registration {
     public void completeRegistration() {
         validator = new BankIdValidator();
         do {
-            System.out.println("Please Enter a correct password:");
+            System.out.println("Please Enter a correct Bank ID:");
             BankAccID = scanner.nextLine();
         } while (!validator.isValid(BankAccID));
 

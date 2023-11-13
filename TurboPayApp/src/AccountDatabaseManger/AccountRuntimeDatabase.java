@@ -4,9 +4,9 @@ import UserAccount.UserAccount;
 
 import java.util.ArrayList;
 
-public class AccountRuntimeDatabase implements AccountDatabaseManger {
+public  class AccountRuntimeDatabase implements AccountDatabaseManger {
 
-    ArrayList<UserAccount> accounts;
+    public static final ArrayList<UserAccount> accounts = new ArrayList<UserAccount>();
 
     @Override
     public boolean isUsernameExist(String username) {
@@ -19,7 +19,7 @@ public class AccountRuntimeDatabase implements AccountDatabaseManger {
     }
 
     @Override
-    public boolean isAccountExist(String username, String password) {
+    public  boolean isAccountExist(String username, String password) {
         for (UserAccount acc:accounts) {
             if(acc.getUsername().equals(username) && acc.getPassword().equals(password)){
                 return true;
@@ -29,7 +29,7 @@ public class AccountRuntimeDatabase implements AccountDatabaseManger {
     }
 
     @Override
-    public boolean isPasswordExist(String password) {
+    public  boolean isPasswordExist(String password) {
         for (UserAccount acc:accounts) {
             if(acc.getPassword().equals(password)){
                 return true;

@@ -14,13 +14,14 @@ public class UserAccount {
 
 
 
-    public void transferToWallet(String walletID){
+    public void transferToWallet(int amount , String walletNo){
 
     }
-    public void transferToAcc(String accUsername){
+    public void transferToAcc(int amount, String accUsername){
 
     }
     public void payBill(String billType){
+        billPayment = new BillPayment();
         billPayment.pay(billType);
     }
 

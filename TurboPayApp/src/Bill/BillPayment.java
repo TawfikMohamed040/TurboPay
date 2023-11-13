@@ -5,6 +5,7 @@ public class BillPayment {
     private BillFactory billFactory;
 
     public void pay(String billType) {
+        billFactory = new BillFactory();
         bill = billFactory.makeBill(billType);
         bill.billInfo();
 

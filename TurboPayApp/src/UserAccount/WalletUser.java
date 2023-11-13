@@ -1,6 +1,6 @@
 package UserAccount;
 
-public abstract class WalletUser {
+public abstract class WalletUser extends UserAccount {
     String walletID;
 
     abstract void withdraw(int amount);

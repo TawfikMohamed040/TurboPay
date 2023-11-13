@@ -1,6 +1,8 @@
 package SignInManager;
 
 import AccountDatabaseManger.*;
+import static TurboPayMainMenu.TurboPayMainMenu.accountDatabaseManger;
+
 
 import java.util.Objects;
 
@@ -10,7 +12,7 @@ public class SignInManger {
     String password;
 
     public void completeSignIn( ){
-        if(Objects.equals(AccountRuntimeDatabase.accounts.get(0).getUsername(), "kareem")) {
+        if(Objects.equals(accountDatabaseManger.getAccounts().get(0).getUsername(), "kareem")) {
             System.out.println("Signed in");
         }else System.out.println("Account does not exist");
     }

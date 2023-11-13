@@ -6,8 +6,11 @@ import java.util.ArrayList;
 
 public  class AccountRuntimeDatabase implements AccountDatabaseManger {
 
-    public static final ArrayList<UserAccount> accounts = new ArrayList<UserAccount>();
+    public  ArrayList<UserAccount> accounts ;
 
+    public AccountRuntimeDatabase(){
+        accounts = new ArrayList<UserAccount>();
+    }
     @Override
     public boolean isUsernameExist(String username) {
         for (UserAccount acc:accounts) {
@@ -52,5 +55,7 @@ public  class AccountRuntimeDatabase implements AccountDatabaseManger {
         }
     }
 
-
+    public ArrayList<UserAccount> getAccounts() {
+        return accounts;
+    }
 }

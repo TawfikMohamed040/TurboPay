@@ -1,5 +1,6 @@
 package Bill;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Random;
 
@@ -7,15 +8,16 @@ public abstract class Bill {
     String ID;
     int cost ;
     String customerName;
-    Date date ;
+    String date ;
     boolean isPaid ;
     Bill(){
+        customerName = "";
         Random random = new Random();
         cost = 100 + random.nextInt(2000);
     }
     protected void mainInfo(){
         System.out.println("Date : "+ date);
-        System.out.println("Customer name :"+ customerName);
+        System.out.println("Customer name : "+ customerName);
         if(!isPaid){
             System.out.println("Not paid yet");
         }else{
@@ -26,7 +28,7 @@ public abstract class Bill {
     }
     abstract protected void billInfo();
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -54,7 +56,7 @@ public abstract class Bill {
         this.ID = ID;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

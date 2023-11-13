@@ -12,7 +12,7 @@ public class WaterBill extends Bill {
         }else{
             System.out.println("Paid successfully");
         }
-        System.out.println("WATER USED THIS MONTH >> 3239 litters");
+        System.out.println("WATER USED THIS MONTH >> 3239 liters");
         System.out.println("Price : "+cost);
     }
 }

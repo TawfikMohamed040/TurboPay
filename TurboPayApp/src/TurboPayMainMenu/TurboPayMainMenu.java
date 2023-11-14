@@ -1,9 +1,15 @@
 package TurboPayMainMenu;
 
+import API.DatabaseAPI;
 import AccountDatabaseManger.*;
+import Bill.BillPayment;
 import Registration.*;
 import SignInManager.SignInManger;
+import Transaction.TransactionToAcc;
+import Transaction.TransactionToBankAcc;
+import Transaction.TransactionToWallet;
 import UserAccount.*;
+import UserAccountFunctionalites.UserAccountFunctionalites;
 
 import java.util.Scanner;
 
@@ -12,21 +18,16 @@ public class TurboPayMainMenu {
     private SignInManger signInManger;
     Scanner scanner;
     private UserAccount userAccount;
+    private UserAccountFunctionalites userAccFuncs;
     private UserFactory userFactory;
 
     public TurboPayMainMenu() {
         scanner = new Scanner(System.in);
         signInManger = new SignInManger();
-        userAccount = new UserAccount();
+//        userAccount = new BankAccUser();
         userFactory = new UserFactory();
     }
 
-    public static final AccountRuntimeDatabase accountDatabaseManger = new AccountRuntimeDatabase();
-
-
-    public void loadProfileBankUser(String username, String password) {
-
-    }
 
     public void runApp() {
         while (true) {
@@ -47,7 +48,7 @@ public class TurboPayMainMenu {
                     loginUser();
                     break;
                 case 3:
-                    System.out.println("Exiting Instapay System. Goodbye!");
+                    System.out.println("Exiting TurboPay System. Goodbye!");
                     System.exit(0);
                     break;
                 default:
@@ -63,7 +64,7 @@ public class TurboPayMainMenu {
         System.out.println(">>4.Bank User");
         int userType = scanner.nextInt();
         userAccount = userFactory.makeUser(userType);
-        if (userAccount instanceof WalletUser) {
+        if (userType != 4) {
             registration = new WalletAccRegistration();
         } else {
             registration = new BankAccRegistration();
@@ -71,7 +72,7 @@ public class TurboPayMainMenu {
         registration.setUser(userType);
         registration.register();
         userAccount = registration.returnUser();
-        accountDatabaseManger.addNewUser(userAccount);
+        DatabaseAPI.accounts.addNewUser(userAccount);
         System.out.println("=================================================\n");
     }
 
@@ -87,8 +88,9 @@ public class TurboPayMainMenu {
             scanner.nextLine();
         } while (!signInManger.completeSignIn());
 
-        userAccount = accountDatabaseManger.returnAccount(signInManger.getUsername());
+        userAccount = DatabaseAPI.accounts.returnAccountWithUsername(signInManger.getUsername());
 
+        userAccFuncs = new UserAccountFunctionalites(userAccount) ;
         if (userAccount instanceof WalletUser) {
             System.out.println("=================================================\n");
             showWalletUserMenu();
@@ -124,7 +126,7 @@ public class TurboPayMainMenu {
                     inquireBalance();
                     break;
                 case 4:
-                    payBill();
+                    payBillChoice();
                     break;
                 case 5:
                     runApp();
@@ -164,7 +166,7 @@ public class TurboPayMainMenu {
                         inquireBalance();
                         break;
                     case 5:
-                        payBill();
+                        payBillChoice();
                         break;
                     case 6:
                         runApp();
@@ -180,18 +182,19 @@ public class TurboPayMainMenu {
         String bankID= scanner.nextLine();
         System.out.println("Please enter the amount");
         int amount = scanner.nextInt();
-        ((BankAccUser)userAccount).transferToBankAcc( amount, bankID);
+        userAccFuncs.setTransaction(new TransactionToBankAcc());
+        userAccFuncs.transfer(amount, bankID);
     }
 
 
-    private void payBill() {
+    private void payBillChoice() {
         System.out.println("enter bill type");
         String billType = scanner.nextLine();
-        userAccount.payBill(billType);
+        userAccFuncs.payBill(billType);
     }
 
     private void inquireBalance() {
-        System.out.println("Current Balance : "  + userAccount.getBalance());
+        userAccFuncs.inquireAboutBalance();
     }
 
     private void transferToAnotherAccount() {
@@ -199,7 +202,8 @@ public class TurboPayMainMenu {
         String username= scanner.nextLine();
         System.out.println("Please enter the amount");
         int amount = scanner.nextInt();
-        userAccount.transferToAcc( amount, username);
+        userAccFuncs.setTransaction(new TransactionToAcc());
+        userAccFuncs.transfer(amount, username);
     }
 
     private void transferToWallet() {
@@ -207,49 +211,7 @@ public class TurboPayMainMenu {
         String phoneNumber = scanner.nextLine();
         System.out.println("Please enter the amount you want to transfer");
         int amount=scanner.nextInt();
-        userAccount.transferToWallet(amount,phoneNumber);
+        userAccFuncs.setTransaction(new TransactionToWallet());
+       userAccFuncs.transfer(amount, phoneNumber);
     }
 }
-
-
-//        registration = new BankAccRegistration();
-////        while (true){
-////            registration.register();
-////            userAccount = registration.returnUser("epayWallet");
-////            userAccount.payBill("gas");
-//
-//
-//            BankAccUser userAccount = new BankAccUser();
-//            BankAccUser userAccount2 = new BankAccUser();
-//
-//            userAccount.setBalance(0);
-//            userAccount.setUsername("kareem");
-//            userAccount.setPassword("K34243324%43.");
-//
-//            accountDatabaseManger.addNewUser(userAccount);
-//            userAccount.payBill("gas");
-//
-////            userAccount2.setBalance(0);
-////            userAccount2.setUsername("tawfik");
-////            userAccount2.setPassword("K34243324%43.");
-////            userAccount2.setBankAccID("123546");
-////
-////
-////            accountDatabaseManger.addNewUser(userAccount2);
-////
-////            userAccount.transferToAcc(2000, "123546");
-////
-//            System.out.println("Kareem "+userAccount.getBalance());
-////            System.out.println("Tawfik"+userAccount2.getBalance());
-//
-//
-////            accountDatabaseManger.addNewUser(userAccount);
-//
-//
-////            signInManger  = new SignInManger();
-////            signInManger.setUsername("kareem");
-////            signInManger.setPassword("Karrem446*");
-////
-////            signInManger.completeSignIn();
-////        }
-////        System.out.println("1.Register\n2.Signin\n");

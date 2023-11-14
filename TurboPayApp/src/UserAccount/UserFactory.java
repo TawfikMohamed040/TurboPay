@@ -6,9 +6,6 @@ import Bill.WaterBill;
 
 public class UserFactory {
     public UserAccount makeUser(int userAccType){
-        // BankWalletUser
-        // EpayWalletUser
-        // TeleComWalletUser
 
         return switch (userAccType) {
             case 1 -> new EpayWalletUser();

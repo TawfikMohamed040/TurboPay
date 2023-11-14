@@ -1,5 +1,7 @@
 package Bill;
 
+import UserAccount.UserAccount;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -7,20 +9,23 @@ public class BillPayment {
     private Bill bill;
     private BillFactory billFactory;
 
-    public void setBillType(String billType){
+    public BillPayment() {
         billFactory = new BillFactory();
-        bill = billFactory.makeBill(billType);
-
     }
-    public void pay() {
-//        LocalDateTime now = LocalDateTime.now();
+
+    public void pay(UserAccount account, String billType) {
+        bill = billFactory.makeBill(billType);
+        if (account.getBalance() < bill.getCost()) {
+            bill.setPaid(false);
+            System.out.println("There is no enough balance");
+            return;
+        }
+        bill.setPaid(true);
+        account.setBalance(account.getBalance() - bill.getCost());
+        bill.setCustomerName(account.getUsername());
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        bill.setDate(dtf.format(now));
+        bill.setDate(dtf.format(LocalDateTime.now()));
         bill.billInfo();
     }
 
-    public Bill getBill() {
-        return bill;
-    }
 }

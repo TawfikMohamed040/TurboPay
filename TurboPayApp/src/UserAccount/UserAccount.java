@@ -1,26 +1,18 @@
 package UserAccount;
 
+import Bill.BillPayment;
+
+
 public class UserAccount {
     private String username;
     private String password;
     private String email;
     private Integer balance;
     private String phone;
-//    billPayment:BillPayment;
-
-
-
-
-
-    public void transferToWallet(String walletID){
-
+    public UserAccount(){
+        this.balance=5000;
     }
-    public void transferToAcc(String accUsername){
 
-    }
-    public void payBill(String billType){
-
-    }
 
     public void setBalance(Integer balance) {
         this.balance = balance;

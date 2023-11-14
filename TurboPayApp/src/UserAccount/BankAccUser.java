@@ -1,9 +1,18 @@
 package UserAccount;
 
-public class BankAccUser {
+import API.DatabaseAPI;
+
+import java.util.Objects;
+
+public class BankAccUser extends UserAccount {
     private String bankAccID;
 
-    public void transferToBankAcc(String bankID) {
 
+    public void setBankAccID(String bankAccID) {
+        this.bankAccID = bankAccID;
+    }
+
+    public String getBankAccID() {
+        return bankAccID;
     }
 }

@@ -1,28 +1,33 @@
 package SignInManager;
 
-import AccountDatabaseManger.AccountDatabaseManger;
+import API.DatabaseAPI;
+import AccountDatabaseManger.*;
+import UserAccount.UserAccount;
+
+
+
+import java.util.Objects;
 
 public class SignInManger {
-    AccountDatabaseManger ADM;
+
     String username;
     String password;
 
-    public void signIn(){
-        System.out.print("SIGNED IN");
+
+    public boolean completeSignIn(){
+        if(DatabaseAPI.accounts.isAccountExist(username, password)) {
+            System.out.println("Signed in");
+            return true;
+        }else System.out.println("Account does not exist");
+        return false;
     }
-    public void completeSignIn(){
-        System.out.println("USER FOUND");
-    }
+
     public void setUsername(String username) {
         this.username = username;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setADM(AccountDatabaseManger ADM) {
-        this.ADM = ADM;
     }
 
     public String getPassword() {
@@ -33,7 +38,5 @@ public class SignInManger {
         return username;
     }
 
-    public AccountDatabaseManger getADM() {
-        return ADM;
-    }
+
 }
